@@ -163,35 +163,66 @@ def card_shell(width: int, height: int, body: str, title: str, bg: str = BG) -> 
 # A. Hero
 # ---------------------------------------------------------------------------
 
+def _hero_illustration(cx: float, cy: float, scale: float = 1.0) -> str:
+    """Original abstract motif (overlapping interface frames) — no portrait,
+    no copied assets. Reads as an editorial geometric mark, not a face."""
+    s = scale
+    rings = []
+    radii = [108, 80, 52]
+    colors = [ACCENT_SOFT, ACCENT_MID, ACCENT]
+    widths = [10, 9, 8]
+    for i, (r, color, sw) in enumerate(zip(radii, colors, widths)):
+        d = 0.5 + i * 0.12
+        rings.append(
+            f'<circle {anim("p", d)} cx="{cx}" cy="{cy}" r="{r * s:.1f}" '
+            f'fill="none" stroke="{color}" stroke-width="{sw}"/>'
+        )
+    # a small grid of corner brackets + dots suggesting a UI canvas
+    frame = (
+        f'<g {anim("f", 0.75)} opacity="1">'
+        f'<rect x="{cx - 64*s:.1f}" y="{cy - 64*s:.1f}" width="{128*s:.1f}" height="{128*s:.1f}" '
+        f'rx="{16*s:.1f}" fill="none" stroke="{INK}" stroke-width="3"/>'
+        f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{9*s:.1f}" fill="{ACCENT}"/>'
+        f'<circle cx="{cx - 36*s:.1f}" cy="{cy + 36*s:.1f}" r="{5*s:.1f}" fill="{INK}"/>'
+        f'<circle cx="{cx + 34*s:.1f}" cy="{cy - 28*s:.1f}" r="{3.5*s:.1f}" fill="{INK}"/>'
+        f'</g>'
+    )
+    return "\n".join(rings) + "\n" + frame
+
+
 def render_hero(profile: dict) -> str:
-    w, h = 940, 300
+    w, h = 940, 340
     headline = profile["headline"]
     location = profile["location"]
-    bio_lines = wrap_text(profile["bio"], max_chars=96)[:2]
+    bio_lines = wrap_text(profile["bio"], max_chars=72)[:2]
 
+    left_w = 600
     body = f"""
     <g {anim('f', 0.0)}>
-      <rect x="42" y="40" width="8" height="8" rx="2" fill="{ACCENT}"/>
-      <text x="60" y="48" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">UX/UI DESIGNER · WEB DEVELOPER</text>
+      <rect x="48" y="48" width="8" height="8" rx="2" fill="{ACCENT}"/>
+      <text x="66" y="56" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">UX/UI DESIGNER · WEB DEVELOPER</text>
     </g>
-    <text {anim('r', 0.12)} x="40" y="118" font-family="{SERIF}" font-size="56" letter-spacing="-1" fill="{INK}">Alejandro</text>
-    <text {anim('r', 0.26)} x="40" y="172" font-family="{SERIF}" font-style="italic" font-size="56" letter-spacing="-1" fill="{ACCENT}">Horna Quezada</text>
+    <text {anim('r', 0.12)} x="46" y="132" font-family="{SERIF}" font-size="60" letter-spacing="-1" fill="{INK}">Alejandro</text>
+    <text {anim('r', 0.26)} x="46" y="190" font-family="{SERIF}" font-style="italic" font-size="60" letter-spacing="-1" fill="{ACCENT}">Horna Quezada</text>
     <g {anim('r', 0.45)}>
-      <text x="42" y="206" font-family="{SANS}" font-size="16" fill="{INK_SOFT}">{esc(headline)}</text>
+      <text x="48" y="224" font-family="{SANS}" font-size="16" fill="{INK_SOFT}">{esc(headline)}</text>
     </g>
     """
 
-    y = 236
+    y = 254
     for line in bio_lines:
-        body += f'<text {anim("f", 0.6)} x="42" y="{y}" font-family="{SANS}" font-size="13" fill="{INK_SOFT}">{esc(line)}</text>\n'
-        y += 20
+        body += f'<text {anim("f", 0.6)} x="48" y="{y}" font-family="{SANS}" font-size="13.5" fill="{INK_SOFT}">{esc(line)}</text>\n'
+        y += 21
 
     body += f"""
+    <line x1="48" y1="{h - 56}" x2="{left_w}" y2="{h - 56}" stroke="{LINE}" stroke-width="1"/>
     <g {anim('f', 0.8)}>
-      <text x="42" y="{h - 26}" font-family="{MONO}" font-size="12.5" fill="{INK}">@{esc(profile['github_username'])}</text>
-      <text x="220" y="{h - 26}" font-family="{MONO}" font-size="12.5" fill="{INK_MUTED}">{esc(location)}</text>
+      <text x="48" y="{h - 30}" font-family="{MONO}" font-size="12.5" fill="{INK}">@{esc(profile['github_username'])}</text>
+      <text x="236" y="{h - 30}" font-family="{MONO}" font-size="12.5" fill="{INK_MUTED}">{esc(location)}</text>
     </g>
     """
+
+    body += _hero_illustration(cx=(left_w + w - 48) / 2, cy=h / 2, scale=1.0)
 
     return card_shell(w, h, body, title=f"{profile['full_name']}. {headline}")
 
@@ -349,8 +380,15 @@ def render_tech_stack(profile: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_activity(profile: dict, stats: dict) -> str:
-    w, h = 940, 320
+    w, h = 940, 340
     total = stats["total_contributions"]
+
+    # Two-column split: a wide left column (count + monthly chart) and a
+    # narrow right column of stacked metrics, each separated by a hairline —
+    # mirrors the reference's "contributions / streak / days / busiest day"
+    # composition instead of cramming everything into one horizontal row.
+    divider_x = 666
+    right_x = divider_x + 48
 
     body = f'<text {anim("f", 0.0)} x="42" y="46" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">THE LAST 12 MONTHS ON GITHUB</text>\n'
     body += (
@@ -358,26 +396,13 @@ def render_activity(profile: dict, stats: dict) -> str:
         f'{total:,} <tspan font-style="italic" fill="{ACCENT}">contributions</tspan></text>\n'
     )
 
-    tiles = [
-        ("Current streak", f'{stats["current_streak"]}d'),
-        ("Longest streak", f'{stats["longest_streak"]}d'),
-        ("Active days", stats["active_days"]),
-    ]
-    tile_w, tile_x0, tile_y = 160, w - 42 - 3 * 170, 46
-    for i, (label, value) in enumerate(tiles):
-        x = tile_x0 + i * 170
-        body += f'<g {anim("f", 0.25 + i * 0.1)}>\n'
-        body += f'<text x="{x}" y="{tile_y + 22}" font-family="{SERIF}" font-size="24" fill="{INK}">{value}</text>\n'
-        body += f'<text x="{x}" y="{tile_y + 40}" font-family="{MONO}" font-size="10.5" letter-spacing="1" fill="{INK_MUTED}">{esc(label.upper())}</text>\n'
-        body += "</g>\n"
-
     monthly = stats["monthly"]
     months_sorted = sorted(monthly.keys())[-12:]
     max_val = max([monthly[m] for m in months_sorted], default=1) or 1
     peak_month = max(months_sorted, key=lambda m: monthly[m]) if months_sorted else None
 
-    chart_x, chart_y, chart_w, chart_h = 42, 150, w - 84, 110
-    bar_gap = 12
+    chart_x, chart_y, chart_w, chart_h = 42, 150, divider_x - 42 - 24, 110
+    bar_gap = 10
     bar_w = (chart_w - bar_gap * (len(months_sorted) - 1)) / max(len(months_sorted), 1)
 
     for i, m in enumerate(months_sorted):
@@ -394,12 +419,32 @@ def render_activity(profile: dict, stats: dict) -> str:
         if is_peak:
             body += f'<text {anim("p", d + 0.5)} x="{bx + bar_w / 2:.1f}" y="{by - 8:.1f}" text-anchor="middle" font-family="{MONO}" font-size="10.5" fill="{ACCENT}">{val}</text>\n'
 
+    # Right column: stacked metrics with thin separators, numbers dominant.
+    body += f'<line x1="{divider_x}" y1="40" x2="{divider_x}" y2="{h - 40}" stroke="{LINE}" stroke-width="1"/>\n'
+
+    metrics = [
+        (f'{stats["current_streak"]}d / {stats["longest_streak"]}d', "CURRENT STREAK, AND THE LONGEST"),
+        (str(stats["active_days"]), "ACTIVE DAYS IN THE LAST YEAR"),
+    ]
     if stats.get("busiest_day"):
-        busiest = stats["busiest_day"]
+        metrics.append((str(stats["busiest_day"]["count"]), "ON THE BUSIEST DAY"))
+    else:
+        metrics.append(("—", "NO BUSIEST DAY DATA YET"))
+
+    row_h = (h - 80) / len(metrics)
+    for i, (value, label) in enumerate(metrics):
+        ry = 60 + i * row_h
+        d = 0.35 + i * 0.12
+        body += f'<g {anim("f", d)}>\n'
+        body += f'<text x="{right_x}" y="{ry + 28}" font-family="{SERIF}" font-size="30" fill="{INK}">{esc(value)}</text>\n'
         body += (
-            f'<text {anim("f", 1.2)} x="42" y="{chart_y + chart_h + 46}" font-family="{SANS}" font-size="11.5" fill="{INK_MUTED}">'
-            f'Busiest day: {esc(busiest["date"])} ({busiest["count"]} contributions)</text>\n'
+            f'<text x="{right_x}" y="{ry + 50}" font-family="{SANS}" font-size="11.5" fill="{INK_MUTED}">'
+            f'{esc(label.capitalize())}</text>\n'
         )
+        body += "</g>\n"
+        if i < len(metrics) - 1:
+            sep_y = 60 + (i + 1) * row_h - 18
+            body += f'<line x1="{right_x}" y1="{sep_y}" x2="{w - 42}" y2="{sep_y}" stroke="{LINE}" stroke-width="1"/>\n'
 
     return card_shell(w, h, body, title=f"{total} contributions in the last 12 months")
 
@@ -409,7 +454,7 @@ def render_activity(profile: dict, stats: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_heatmap(profile: dict, stats: dict) -> str:
-    w, h = 940, 190
+    w, h = 940, 220
 
     days = {d["date"]: d["count"] for d in stats["days"]}
     if days:
@@ -436,10 +481,11 @@ def render_heatmap(profile: dict, stats: dict) -> str:
 
     cell = 11
     gap = 3
-    top = 58
+    top = 78
     left = 46
 
     body = f'<text {anim("r", 0.0)} x="42" y="42" font-family="{SERIF}" font-size="26" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
+    body += f'<text {anim("f", 0.2)} x="{w - 42}" y="38" text-anchor="end" font-family="{MONO}" font-size="10.5" letter-spacing="1.5" fill="{INK_MUTED}">REFRESHED DAILY</text>\n'
 
     cur = start
     week = 0

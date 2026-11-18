@@ -1,59 +1,26 @@
-<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Alejandro Horna Quezada profile card</title>
-  
-    <defs>
-      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#7C5CFC"/>
-        <stop offset="100%" stop-color="#22D3EE"/>
-      </linearGradient>
-      <linearGradient id="panelFade" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#111521"/>
-        <stop offset="100%" stop-color="#0B0E14"/>
-      </linearGradient>
-      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="180" viewBox="0 0 300 180" role="img" aria-label="CONNECT: Let's talk">
+  <title>CONNECT: Let's talk</title>
   <style>
     text { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
     
-      @media (prefers-reduced-motion: reduce) {
-        * { animation: none !important; opacity: 1 !important; transform: none !important; }
-      }
-    
-    
-        @keyframes revealUp {
-          from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:none}}
+.r{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) both;transform-box:fill-box}
+.f{opacity:0;animation:fade .8s ease-out both}
+.g{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);animation:grow .7s cubic-bezier(.2,.7,.2,1) both}
+.p{opacity:0;transform-box:fill-box;transform-origin:center;animation:pop .4s ease-out both}
+@media (prefers-reduced-motion: reduce){.r,.f,.g,.p{animation:none!important;opacity:1!important;transform:none!important}}
 
-            .tile-title {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.1s;
-            }
-            
-
-            .tile-sub {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.25s;
-            }
-            
   </style>
-  <rect x="0" y="0" width="300" height="150" rx="18" fill="#0B0E14"/>
-  <rect x="1" y="1" width="298" height="148" rx="17" fill="none" stroke="#242B3D" stroke-width="1.5"/>
+  <rect width="300" height="180" rx="16" fill="#8E79F8"/>
   
-    <rect x="18" y="18" width="264" height="114" rx="14" fill="url(#panelFade)" stroke="#242B3D" stroke-width="1"/>
-    <text x="40" y="62" font-size="26">🔗</text>
-    <text class="tile-title" x="40" y="96" font-size="17" font-weight="700" fill="#E6E9F0">Connect</text>
-    <text class="tile-sub" x="40" y="118" font-size="12.5" fill="#9AA4B8">Let's get in touch on LinkedIn</text>
-    <rect x="18" y="18" width="4" height="114" rx="2" fill="url(#accentGrad)"/>
+    <g class="f" style="animation-delay:0.10s">
+      <text x="24" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="1.5" fill="#F4F3EF" opacity="0.8">CONNECT</text>
+    </g>
+    <text class="r" style="animation-delay:0.22s" x="22" y="100" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#F4F3EF">Let's talk</text>
+    <text class="f" style="animation-delay:0.40s" x="24" y="154" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#F4F3EF" opacity="0.85">linkedin.com/in/alejandro-horna-quezada</text>
+    <text class="f" style="animation-delay:0.40s" x="260" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" fill="#F4F3EF">&#8599;</text>
     
 </svg>

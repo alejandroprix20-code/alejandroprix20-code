@@ -1,56 +1,29 @@
-<svg width="940" height="210" viewBox="0 0 940 210" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Alejandro Horna Quezada profile card</title>
-  
-    <defs>
-      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#7C5CFC"/>
-        <stop offset="100%" stop-color="#22D3EE"/>
-      </linearGradient>
-      <linearGradient id="panelFade" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#111521"/>
-        <stop offset="100%" stop-color="#0B0E14"/>
-      </linearGradient>
-      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="222" viewBox="0 0 940 222" role="img" aria-label="Professional experience">
+  <title>Professional experience</title>
   <style>
     text { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
     
-      @media (prefers-reduced-motion: reduce) {
-        * { animation: none !important; opacity: 1 !important; transform: none !important; }
-      }
-    
-    
-        @keyframes revealUp {
-          from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:none}}
+.r{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) both;transform-box:fill-box}
+.f{opacity:0;animation:fade .8s ease-out both}
+.g{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);animation:grow .7s cubic-bezier(.2,.7,.2,1) both}
+.p{opacity:0;transform-box:fill-box;transform-origin:center;animation:pop .4s ease-out both}
+@media (prefers-reduced-motion: reduce){.r,.f,.g,.p{animation:none!important;opacity:1!important;transform:none!important}}
 
-            .exp-0 {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.15s;
-            }
-            
   </style>
-  <rect x="0" y="0" width="940" height="210" rx="18" fill="#0B0E14"/>
-  <rect x="1" y="1" width="938" height="208" rx="17" fill="none" stroke="#242B3D" stroke-width="1.5"/>
-  <text x="42" y="52" font-size="20" font-weight="700" fill="#E6E9F0">Professional Experience</text>
-<rect x="42" y="64" width="46" height="3" rx="1.5" fill="url(#accentGrad)"/>
-<g class="exp-0">
-<circle cx="52" cy="108" r="6" fill="url(#accentGrad)"/>
-<text x="74" y="112" font-size="16.5" font-weight="700" fill="#E6E9F0">Diseñador de experiencias de usuario (UX Designer)</text>
-<text x="74" y="134" font-size="13.5" font-weight="600" fill="url(#accentGrad)">Blimx</text>
-<text x="74" y="154" font-size="12.5" fill="#9AA4B8">Jan 2023 – Present · Miami, FL, USA · Remote</text>
-<text x="74" y="174" font-size="12.5" fill="#5F6A82">Designing user experiences and interfaces for Blimx's digital products, working remotely as part of</text>
-<text x="74" y="192" font-size="12.5" fill="#5F6A82">the product team.</text>
+  <rect width="940" height="222" rx="16" fill="#F4F3EF"/>
+  <text class="r" style="animation-delay:0.00s" x="42" y="56" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#13131A">Where I <tspan font-style="italic" fill="#5B3DF5">work</tspan></text>
+<line x1="42" y1="74" x2="898" y2="74" stroke="#E1DFD7" stroke-width="1"/>
+<g class="f" style="animation-delay:0.15s">
+<circle cx="52" cy="116" r="5" fill="#5B3DF5"/>
+<text x="74" y="120" font-family="Georgia, 'Times New Roman', serif" font-size="19" fill="#13131A">Diseñador de experiencias de usuario (UX Designer)</text>
+<text x="74" y="142" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" letter-spacing="0.5" fill="#5B3DF5">BLIMX</text>
+<text x="74" y="162" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#8A8A90">Jan 2023 – Present · Miami, FL, USA · Remote</text>
+<text x="74" y="182" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#4B4B52">Designing user experiences and interfaces for Blimx's digital products, working remotely as part of the</text>
+<text x="74" y="199" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#4B4B52">product team.</text>
 </g>
 
 </svg>

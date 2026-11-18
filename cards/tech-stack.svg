@@ -1,109 +1,61 @@
-<svg width="940" height="304" viewBox="0 0 940 304" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Alejandro Horna Quezada profile card</title>
-  
-    <defs>
-      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#7C5CFC"/>
-        <stop offset="100%" stop-color="#22D3EE"/>
-      </linearGradient>
-      <linearGradient id="panelFade" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#111521"/>
-        <stop offset="100%" stop-color="#0B0E14"/>
-      </linearGradient>
-      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge>
-          <feMergeNode in="blur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="312" viewBox="0 0 940 312" role="img" aria-label="Technical skills">
+  <title>Technical skills</title>
   <style>
     text { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
     
-      @media (prefers-reduced-motion: reduce) {
-        * { animation: none !important; opacity: 1 !important; transform: none !important; }
-      }
-    
-    
-        @keyframes revealUp {
-          from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:none}}
+.r{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) both;transform-box:fill-box}
+.f{opacity:0;animation:fade .8s ease-out both}
+.g{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);animation:grow .7s cubic-bezier(.2,.7,.2,1) both}
+.p{opacity:0;transform-box:fill-box;transform-origin:center;animation:pop .4s ease-out both}
+@media (prefers-reduced-motion: reduce){.r,.f,.g,.p{animation:none!important;opacity:1!important;transform:none!important}}
 
-            .cat-0 {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.1s;
-            }
-            
-
-            .cat-1 {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.22s;
-            }
-            
-
-            .cat-2 {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.33999999999999997s;
-            }
-            
-
-            .cat-3 {
-              opacity: 0;
-              animation: revealUp 0.6s ease-out forwards;
-              animation-delay: 0.45999999999999996s;
-            }
-            
   </style>
-  <rect x="0" y="0" width="940" height="304" rx="18" fill="#0B0E14"/>
-  <rect x="1" y="1" width="938" height="302" rx="17" fill="none" stroke="#242B3D" stroke-width="1.5"/>
-  <text x="42" y="52" font-size="20" font-weight="700" fill="#E6E9F0">Technical Skills</text>
-<rect x="42" y="64" width="46" height="3" rx="1.5" fill="url(#accentGrad)"/>
-<g class="cat-0">
-<text x="42" y="96" font-size="13" font-weight="700" fill="url(#accentGrad)">FRONTEND DEVELOPMENT</text>
-<rect x="42" y="112" width="86" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="85" y="129" font-size="12" text-anchor="middle" fill="#E6E9F0">JavaScript</text>
-<rect x="138.0" y="112" width="50" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="163" y="129" font-size="12" text-anchor="middle" fill="#E6E9F0">React</text>
-<rect x="198.0" y="112" width="50" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="223" y="129" font-size="12" text-anchor="middle" fill="#E6E9F0">HTML5</text>
-<rect x="258.0" y="112" width="43" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="279" y="129" font-size="12" text-anchor="middle" fill="#E6E9F0">CSS3</text>
-<rect x="310.8" y="112" width="43" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="332" y="129" font-size="12" text-anchor="middle" fill="#E6E9F0">Vite</text>
+  <rect width="940" height="312" rx="16" fill="#F4F3EF"/>
+  <text class="r" style="animation-delay:0.00s" x="42" y="56" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#13131A">What I <tspan font-style="italic" fill="#5B3DF5">build with</tspan></text>
+<line x1="42" y1="74" x2="898" y2="74" stroke="#E1DFD7" stroke-width="1"/>
+<g class="f" style="animation-delay:0.10s">
+<text x="42" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" letter-spacing="1.5" fill="#5B3DF5">FRONTEND DEVELOPMENT</text>
+<rect x="42" y="114" width="88" height="26" rx="13" fill="#EAE8E0"/>
+<text x="86" y="131" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">JavaScript</text>
+<rect x="140.0" y="114" width="52" height="26" rx="13" fill="#EAE8E0"/>
+<text x="166" y="131" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">React</text>
+<rect x="202.0" y="114" width="52" height="26" rx="13" fill="#EAE8E0"/>
+<text x="228" y="131" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">HTML5</text>
+<rect x="264.0" y="114" width="45" height="26" rx="13" fill="#EAE8E0"/>
+<text x="286" y="131" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">CSS3</text>
+<rect x="318.8" y="114" width="45" height="26" rx="13" fill="#EAE8E0"/>
+<text x="341" y="131" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Vite</text>
 </g>
-<g class="cat-1">
-<text x="42" y="152" font-size="13" font-weight="700" fill="url(#accentGrad)">BACKEND DEVELOPMENT</text>
-<rect x="42" y="168" width="57" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="71" y="185" font-size="12" text-anchor="middle" fill="#E6E9F0">Python</text>
+<g class="f" style="animation-delay:0.22s">
+<text x="42" y="154" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" letter-spacing="1.5" fill="#5B3DF5">BACKEND DEVELOPMENT</text>
+<rect x="42" y="168" width="59" height="26" rx="13" fill="#EAE8E0"/>
+<text x="72" y="185" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Python</text>
 </g>
-<g class="cat-2">
-<text x="42" y="208" font-size="13" font-weight="700" fill="url(#accentGrad)">UX/UI DESIGN</text>
-<rect x="42" y="224" width="50" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="67" y="241" font-size="12" text-anchor="middle" fill="#E6E9F0">Figma</text>
-<rect x="102.0" y="224" width="79" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="141" y="241" font-size="12" text-anchor="middle" fill="#E6E9F0">Photoshop</text>
-<rect x="190.8" y="224" width="93" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="237" y="241" font-size="12" text-anchor="middle" fill="#E6E9F0">Illustrator</text>
-<rect x="294.0" y="224" width="108" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="348" y="241" font-size="12" text-anchor="middle" fill="#E6E9F0">User Research</text>
-<rect x="411.6" y="224" width="93" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="458" y="241" font-size="12" text-anchor="middle" fill="#E6E9F0">Prototyping</text>
+<g class="f" style="animation-delay:0.34s">
+<text x="42" y="208" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" letter-spacing="1.5" fill="#5B3DF5">UX/UI DESIGN</text>
+<rect x="42" y="222" width="52" height="26" rx="13" fill="#EAE8E0"/>
+<text x="68" y="239" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Figma</text>
+<rect x="104.0" y="222" width="81" height="26" rx="13" fill="#EAE8E0"/>
+<text x="144" y="239" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Photoshop</text>
+<rect x="194.8" y="222" width="95" height="26" rx="13" fill="#EAE8E0"/>
+<text x="242" y="239" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Illustrator</text>
+<rect x="300.0" y="222" width="110" height="26" rx="13" fill="#EAE8E0"/>
+<text x="355" y="239" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">User Research</text>
+<rect x="419.6" y="222" width="95" height="26" rx="13" fill="#EAE8E0"/>
+<text x="467" y="239" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Prototyping</text>
 </g>
-<g class="cat-3">
-<text x="42" y="264" font-size="13" font-weight="700" fill="url(#accentGrad)">DEVELOPMENT TOOLS</text>
-<rect x="42" y="280" width="36" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="60" y="297" font-size="12" text-anchor="middle" fill="#E6E9F0">Git</text>
-<rect x="87.6" y="280" width="57" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="116" y="297" font-size="12" text-anchor="middle" fill="#E6E9F0">GitHub</text>
-<rect x="154.8" y="280" width="64" height="26" rx="13" fill="#111521" stroke="#242B3D" stroke-width="1"/>
-<text x="187" y="297" font-size="12" text-anchor="middle" fill="#E6E9F0">VS Code</text>
+<g class="f" style="animation-delay:0.46s">
+<text x="42" y="262" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" letter-spacing="1.5" fill="#5B3DF5">DEVELOPMENT TOOLS</text>
+<rect x="42" y="276" width="38" height="26" rx="13" fill="#EAE8E0"/>
+<text x="61" y="293" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">Git</text>
+<rect x="89.6" y="276" width="59" height="26" rx="13" fill="#EAE8E0"/>
+<text x="119" y="293" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">GitHub</text>
+<rect x="158.8" y="276" width="66" height="26" rx="13" fill="#EAE8E0"/>
+<text x="192" y="293" font-size="12" text-anchor="middle" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" fill="#13131A">VS Code</text>
 </g>
 
 </svg>

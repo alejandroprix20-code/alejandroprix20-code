@@ -21,7 +21,9 @@ Usage:
 """
 from __future__ import annotations
 
+import base64
 import datetime as dt
+import functools
 import json
 import os
 from xml.sax.saxutils import escape
@@ -29,6 +31,7 @@ from xml.sax.saxutils import escape
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "data")
 CARDS_DIR = os.path.join(ROOT, "cards")
+FONTS_DIR = os.path.join(ROOT, "fonts")
 
 STATIC = os.environ.get("STATIC") == "1"
 
@@ -47,9 +50,40 @@ ACCENT = "#5B3DF5"       # violet — the personal brand accent
 ACCENT_SOFT = "#C9BFFB"  # tint for low-intensity heatmap cells
 ACCENT_MID = "#8E79F8"   # mid-intensity tint
 
-SERIF = "Georgia, 'Times New Roman', serif"
-MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
-SANS = "-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+SERIF = "'Instrument Serif', Georgia, 'Times New Roman', serif"
+MONO = "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+SANS = "'Geist', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+
+# ---------------------------------------------------------------------------
+# Embedded, glyph-subsetted fonts (self-contained — no network fetch at
+# render time). See fonts/LICENSE-OFL.txt: Instrument Serif and Geist/Geist
+# Mono are both SIL Open Font License 1.1, which permits base64 embedding.
+# These are the same families used by github.com/AviVashishta29's cards.
+# ---------------------------------------------------------------------------
+
+_FONT_FACES = [
+    ("Instrument Serif", "InstrumentSerif-Regular.woff2", "normal", 400),
+    ("Instrument Serif", "InstrumentSerif-Italic.woff2", "italic", 400),
+    ("Geist", "Geist-400.woff2", "normal", 400),
+    ("Geist", "Geist-600.woff2", "normal", 600),
+    ("Geist Mono", "GeistMono-400.woff2", "normal", 400),
+]
+
+
+@functools.lru_cache(maxsize=None)
+def _font_css() -> str:
+    rules = []
+    for family, fname, style, weight in _FONT_FACES:
+        path = os.path.join(FONTS_DIR, fname)
+        with open(path, "rb") as f:
+            data = base64.b64encode(f.read()).decode("ascii")
+        rules.append(
+            "@font-face{"
+            f"font-family:'{family}';font-style:{style};font-weight:{weight};"
+            f"font-display:swap;src:url(data:font/woff2;base64,{data}) format('woff2');"
+            "}"
+        )
+    return "\n".join(rules)
 
 MONTH_NAMES = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -116,6 +150,7 @@ def card_shell(width: int, height: int, body: str, title: str, bg: str = BG) -> 
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{esc(title)}">
   <title>{esc(title)}</title>
   <style>
+    {_font_css()}
     text {{ font-family: {SANS}; }}
     {ANIM_CSS}
   </style>
@@ -220,6 +255,15 @@ def render_experience(profile: dict) -> str:
 # D. Education & certifications
 # ---------------------------------------------------------------------------
 
+def _cert_expired(expires: str) -> bool:
+    try:
+        expiry = dt.datetime.strptime(expires, "%b %Y").replace(day=1)
+    except ValueError:
+        return False
+    today = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
+    return expiry < today.replace(day=1)
+
+
 def render_education(profile: dict) -> str:
     w = 940
     certs = profile["certifications"]
@@ -257,7 +301,11 @@ def render_education(profile: dict) -> str:
         body += f'<rect x="{cx}" y="{cy}" width="{col_w}" height="44" rx="8" fill="{PANEL}"/>\n'
         body += f'<circle cx="{cx + 20}" cy="{cy + 22}" r="4" fill="{ACCENT}"/>\n'
         body += f'<text x="{cx + 36}" y="{cy + 19}" font-family="{SANS}" font-size="12.5" font-weight="600" fill="{INK}">{esc(cert["name"])}</text>\n'
-        body += f'<text x="{cx + 36}" y="{cy + 35}" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">{esc(cert["issuer"])} · {esc(cert["issued"])}</text>\n'
+        status = f'Issued {cert["issued"]}'
+        expires = cert.get("expires")
+        if expires:
+            status += f' · Expired {expires}' if _cert_expired(expires) else f' · Valid to {expires}'
+        body += f'<text x="{cx + 36}" y="{cy + 35}" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">{esc(cert["issuer"])} · {esc(status)}</text>\n'
         body += "</g>\n"
 
     return card_shell(w, h, body, title="Education and certifications")
@@ -427,7 +475,19 @@ def render_heatmap(profile: dict, stats: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
-# H. Featured repository cards
+# H. Editorial separator
+# ---------------------------------------------------------------------------
+
+def render_title_coding() -> str:
+    w, h = 940, 92
+    body = f'<text {anim("r", 0.0)} x="42" y="54" font-family="{SERIF}" font-size="32" fill="{INK}">Featured <tspan font-style="italic" fill="{ACCENT}">Work</tspan></text>\n'
+    body += f'<text {anim("f", 0.25)} x="{w - 42}" y="54" text-anchor="end" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">WHAT I\'M BUILDING</text>\n'
+    body += f'<line x1="42" y1="70" x2="{w - 42}" y2="70" stroke="{LINE}" stroke-width="1"/>\n'
+    return card_shell(w, h, body, title="Featured work — what I'm building")
+
+
+# ---------------------------------------------------------------------------
+# I. Featured repository cards
 # ---------------------------------------------------------------------------
 
 def render_repo_card(filename: str, repo: dict) -> None:
@@ -482,6 +542,7 @@ def main() -> None:
     write_svg("experience.svg", render_experience(profile))
     write_svg("education.svg", render_education(profile))
     write_svg("tech-stack.svg", render_tech_stack(profile))
+    write_svg("title-coding.svg", render_title_coding())
 
     for repo_name in profile.get("featured_repos", []):
         repo = repos_by_name.get(repo_name, {"name": repo_name, "description": "", "language": "", "stars": 0, "forks": 0})

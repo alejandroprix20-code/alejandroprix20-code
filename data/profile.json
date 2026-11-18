@@ -10,7 +10,7 @@
   "accent_secondary": "#22D3EE",
   "experience": [
     {
-      "title": "Diseñador de experiencias de usuario (UX Designer)",
+      "title": "User Experience Designer (UX Designer)",
       "company": "Blimx",
       "start": "Jan 2023",
       "end": "Present",
@@ -20,12 +20,12 @@
   ],
   "education": [],
   "certifications": [
-    { "name": "Certificado de la carrera de UX/UI", "issuer": "Coderhouse", "issued": "Sep 2023" },
-    { "name": "Curso de Diseño UX/UI Avanzado", "issuer": "Coderhouse", "issued": "Apr 2024" },
-    { "name": "Certificado de Desarrollo Web", "issuer": "Coderhouse", "issued": "Apr 2024" },
-    { "name": "Curso de Diseño UX/UI", "issuer": "Coderhouse", "issued": "Nov 2023" },
-    { "name": "Curso de Python", "issuer": "Coderhouse", "issued": "Aug 2024" },
-    { "name": "Curso de Photoshop e Illustrator", "issuer": "Coderhouse", "issued": "Sep 2023" }
+    { "name": "UX/UI Design Career Certificate", "issuer": "Coderhouse", "issued": "Sep 2023", "expires": "Jun 2024" },
+    { "name": "Advanced UX/UI Design Course", "issuer": "Coderhouse", "issued": "Apr 2024", "expires": "Jul 2024" },
+    { "name": "Web Development Certificate", "issuer": "Coderhouse", "issued": "Apr 2024", "expires": "Jun 2024" },
+    { "name": "UX/UI Design Course", "issuer": "Coderhouse", "issued": "Nov 2023", "expires": "Feb 2024" },
+    { "name": "Python Course", "issuer": "Coderhouse", "issued": "Aug 2024", "expires": "Oct 2024" },
+    { "name": "Photoshop and Illustrator Course", "issuer": "Coderhouse", "issued": "Sep 2023", "expires": "Oct 2023" }
   ],
   "skills": {
     "Frontend Development": ["JavaScript", "React", "HTML5", "CSS3", "Vite"],

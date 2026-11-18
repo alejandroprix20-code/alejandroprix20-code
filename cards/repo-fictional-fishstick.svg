@@ -1,0 +1,60 @@
+<svg width="300" height="180" viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Alejandro Horna Quezada profile card</title>
+  
+    <defs>
+      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#7C5CFC"/>
+        <stop offset="100%" stop-color="#22D3EE"/>
+      </linearGradient>
+      <linearGradient id="panelFade" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#111521"/>
+        <stop offset="100%" stop-color="#0B0E14"/>
+      </linearGradient>
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    
+  <style>
+    text { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    
+      @media (prefers-reduced-motion: reduce) {
+        * { animation: none !important; opacity: 1 !important; transform: none !important; }
+      }
+    
+    
+        @keyframes revealUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        
+
+            .repo-name {
+              opacity: 0;
+              animation: revealUp 0.6s ease-out forwards;
+              animation-delay: 0.1s;
+            }
+            
+
+            .repo-desc {
+              opacity: 0;
+              animation: revealUp 0.6s ease-out forwards;
+              animation-delay: 0.25s;
+            }
+            
+  </style>
+  <rect x="0" y="0" width="300" height="180" rx="18" fill="#0B0E14"/>
+  <rect x="1" y="1" width="298" height="178" rx="17" fill="none" stroke="#242B3D" stroke-width="1.5"/>
+  
+    <text class="repo-name" x="24" y="40" font-size="16" font-weight="700" fill="#E6E9F0">fictional-fishstick</text>
+    <text class="repo-desc" x="24" y="64" font-size="12" fill="#9AA4B8">My own project</text>
+<circle cx="32" cy="152" r="5" fill="url(#accentGrad)"/>
+<text x="44" y="156" font-size="11.5" fill="#9AA4B8">CSS</text>
+<text x="150" y="156" font-size="11.5" fill="#9AA4B8">★ 0</text>
+<text x="210" y="156" font-size="11.5" fill="#9AA4B8">⑂ 0</text>
+
+</svg>

@@ -1,0 +1,41 @@
+{
+  "full_name": "Alejandro Horna Quezada",
+  "github_username": "alejandroprix20-code",
+  "headline": "UX/UI Designer & Web Developer | Building Modern Digital Experiences",
+  "bio": "UX/UI Designer at Blimx, focused on designing and building clean, modern web experiences. I work across the full product loop: research, interface design in Figma, and front-end implementation with React and modern JavaScript. Currently sharpening my engineering skills with Python and full-stack project work.",
+  "location": "Trujillo, Peru",
+  "linkedin_url": "https://www.linkedin.com/in/alejandro-horna-quezada-7b96ba200",
+  "portfolio_url": null,
+  "accent_primary": "#7C5CFC",
+  "accent_secondary": "#22D3EE",
+  "experience": [
+    {
+      "title": "Diseñador de experiencias de usuario (UX Designer)",
+      "company": "Blimx",
+      "start": "Jan 2023",
+      "end": "Present",
+      "location": "Miami, FL, USA · Remote",
+      "summary": "Designing user experiences and interfaces for Blimx's digital products, working remotely as part of the product team."
+    }
+  ],
+  "education": [],
+  "certifications": [
+    { "name": "Certificado de la carrera de UX/UI", "issuer": "Coderhouse", "issued": "Sep 2023" },
+    { "name": "Curso de Diseño UX/UI Avanzado", "issuer": "Coderhouse", "issued": "Apr 2024" },
+    { "name": "Certificado de Desarrollo Web", "issuer": "Coderhouse", "issued": "Apr 2024" },
+    { "name": "Curso de Diseño UX/UI", "issuer": "Coderhouse", "issued": "Nov 2023" },
+    { "name": "Curso de Python", "issuer": "Coderhouse", "issued": "Aug 2024" },
+    { "name": "Curso de Photoshop e Illustrator", "issuer": "Coderhouse", "issued": "Sep 2023" }
+  ],
+  "skills": {
+    "Frontend Development": ["JavaScript", "React", "HTML5", "CSS3", "Vite"],
+    "Backend Development": ["Python"],
+    "UX/UI Design": ["Figma", "Photoshop", "Illustrator", "User Research", "Prototyping"],
+    "Development Tools": ["Git", "GitHub", "VS Code"]
+  },
+  "featured_repos": [
+    "fantastic-react",
+    "fictional-fishstick",
+    "First_Game"
+  ]
+}

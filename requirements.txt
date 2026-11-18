@@ -1,0 +1,3 @@
+# This generator only uses the Python standard library (json, datetime, xml.sax.saxutils, urllib).
+# This file is kept so the workflow's "pip install" step has something to target
+# if dependencies are ever added (e.g. font subsetting with fonttools).

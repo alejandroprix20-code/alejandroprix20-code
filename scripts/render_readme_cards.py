@@ -54,6 +54,12 @@ SERIF = "'Instrument Serif', Georgia, 'Times New Roman', serif"
 MONO = "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
 SANS = "'Geist', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
 
+# Shared spacing system — a consistent rhythm across every card so nothing
+# feels compressed or arbitrarily positioned.
+PAD = 48          # outer card padding (left/right/top safe margin)
+RADIUS = 18        # card corner radius
+SECTION_GAP = 26   # space between a heading/rule and the content below it
+
 # ---------------------------------------------------------------------------
 # Embedded, glyph-subsetted fonts (self-contained — no network fetch at
 # render time). See fonts/LICENSE-OFL.txt: Instrument Serif and Geist/Geist
@@ -154,7 +160,7 @@ def card_shell(width: int, height: int, body: str, title: str, bg: str = BG) -> 
     text {{ font-family: {SANS}; }}
     {ANIM_CSS}
   </style>
-  <rect width="{width}" height="{height}" rx="16" fill="{bg}"/>
+  <rect width="{width}" height="{height}" rx="{RADIUS}" fill="{bg}"/>
   {body}
 </svg>"""
 
@@ -191,7 +197,7 @@ def _hero_illustration(cx: float, cy: float, scale: float = 1.0) -> str:
 
 
 def render_hero(profile: dict) -> str:
-    w, h = 940, 340
+    w, h = 940, 360
     headline = profile["headline"]
     location = profile["location"]
     bio_lines = wrap_text(profile["bio"], max_chars=72)[:2]
@@ -199,30 +205,30 @@ def render_hero(profile: dict) -> str:
     left_w = 600
     body = f"""
     <g {anim('f', 0.0)}>
-      <rect x="48" y="48" width="8" height="8" rx="2" fill="{ACCENT}"/>
-      <text x="66" y="56" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">UX/UI DESIGNER · WEB DEVELOPER</text>
+      <rect x="{PAD}" y="{PAD}" width="8" height="8" rx="2" fill="{ACCENT}"/>
+      <text x="{PAD + 18}" y="{PAD + 8}" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">UX/UI DESIGNER · WEB DEVELOPER</text>
     </g>
-    <text {anim('r', 0.12)} x="46" y="132" font-family="{SERIF}" font-size="60" letter-spacing="-1" fill="{INK}">Alejandro</text>
-    <text {anim('r', 0.26)} x="46" y="190" font-family="{SERIF}" font-style="italic" font-size="60" letter-spacing="-1" fill="{ACCENT}">Horna Quezada</text>
+    <text {anim('r', 0.12)} x="{PAD - 2}" y="144" font-family="{SERIF}" font-size="62" letter-spacing="-1" fill="{INK}">Alejandro</text>
+    <text {anim('r', 0.26)} x="{PAD - 2}" y="204" font-family="{SERIF}" font-style="italic" font-size="62" letter-spacing="-1" fill="{ACCENT}">Horna Quezada</text>
     <g {anim('r', 0.45)}>
-      <text x="48" y="224" font-family="{SANS}" font-size="16" fill="{INK_SOFT}">{esc(headline)}</text>
+      <text x="{PAD}" y="240" font-family="{SANS}" font-size="16" fill="{INK_SOFT}">{esc(headline)}</text>
     </g>
     """
 
-    y = 254
+    y = 272
     for line in bio_lines:
-        body += f'<text {anim("f", 0.6)} x="48" y="{y}" font-family="{SANS}" font-size="13.5" fill="{INK_SOFT}">{esc(line)}</text>\n'
-        y += 21
+        body += f'<text {anim("f", 0.6)} x="{PAD}" y="{y}" font-family="{SANS}" font-size="13.5" fill="{INK_SOFT}">{esc(line)}</text>\n'
+        y += 22
 
     body += f"""
-    <line x1="48" y1="{h - 56}" x2="{left_w}" y2="{h - 56}" stroke="{LINE}" stroke-width="1"/>
+    <line x1="{PAD}" y1="{h - 58}" x2="{left_w}" y2="{h - 58}" stroke="{LINE}" stroke-width="1"/>
     <g {anim('f', 0.8)}>
-      <text x="48" y="{h - 30}" font-family="{MONO}" font-size="12.5" fill="{INK}">@{esc(profile['github_username'])}</text>
+      <text x="{PAD}" y="{h - 30}" font-family="{MONO}" font-size="12.5" fill="{INK}">@{esc(profile['github_username'])}</text>
       <text x="236" y="{h - 30}" font-family="{MONO}" font-size="12.5" fill="{INK_MUTED}">{esc(location)}</text>
     </g>
     """
 
-    body += _hero_illustration(cx=(left_w + w - 48) / 2, cy=h / 2, scale=1.0)
+    body += _hero_illustration(cx=(left_w + w - PAD) / 2, cy=h / 2, scale=1.0)
 
     return card_shell(w, h, body, title=f"{profile['full_name']}. {headline}")
 
@@ -235,17 +241,17 @@ TILE_PALETTE = [ACCENT, INK, ACCENT_MID]
 
 
 def render_nav_tile(filename: str, index: int, label: str, headline: str, sub: str) -> None:
-    w, h = 300, 180
+    w, h = 300, 200
     fill = TILE_PALETTE[index % len(TILE_PALETTE)]
     text_color = "#F4F3EF"
 
     body = f"""
     <g {anim('f', 0.1)}>
-      <text x="24" y="40" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{text_color}" opacity="0.8">{esc(label)}</text>
+      <text x="28" y="44" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{text_color}" opacity="0.8">{esc(label)}</text>
     </g>
-    <text {anim('r', 0.22)} x="22" y="100" font-family="{SERIF}" font-size="30" fill="{text_color}">{esc(headline)}</text>
-    <text {anim('f', 0.4)} x="24" y="{h - 26}" font-family="{SANS}" font-size="12" fill="{text_color}" opacity="0.85">{esc(sub)}</text>
-    <text {anim('f', 0.4)} x="{w - 40}" y="40" font-family="{MONO}" font-size="16" fill="{text_color}">&#8599;</text>
+    <text {anim('r', 0.22)} x="26" y="112" font-family="{SERIF}" font-size="32" fill="{text_color}">{esc(headline)}</text>
+    <text {anim('f', 0.4)} x="28" y="{h - 28}" font-family="{SANS}" font-size="12" fill="{text_color}" opacity="0.85">{esc(sub)}</text>
+    <text {anim('f', 0.4)} x="{w - 44}" y="44" font-family="{MONO}" font-size="16" fill="{text_color}">&#8599;</text>
     """
     write_svg(filename, card_shell(w, h, body, title=f"{label}: {headline}", bg=fill))
 
@@ -257,27 +263,29 @@ def render_nav_tile(filename: str, index: int, label: str, headline: str, sub: s
 def render_experience(profile: dict) -> str:
     w = 940
     entries = profile["experience"]
-    h = 130 + 92 * max(len(entries), 1)
+    row_h = 104
+    h = 150 + row_h * max(len(entries), 1)
 
-    body = f'<text {anim("r", 0.0)} x="42" y="56" font-family="{SERIF}" font-size="30" fill="{INK}">Where I <tspan font-style="italic" fill="{ACCENT}">work</tspan></text>\n'
-    body += f'<line x1="42" y1="74" x2="{w - 42}" y2="74" stroke="{LINE}" stroke-width="1"/>\n'
+    body = f'<text {anim("r", 0.0)} x="{PAD}" y="58" font-family="{SERIF}" font-size="32" fill="{INK}">Where I <tspan font-style="italic" fill="{ACCENT}">work</tspan></text>\n'
+    body += f'<line x1="{PAD}" y1="80" x2="{w - PAD}" y2="80" stroke="{LINE}" stroke-width="1"/>\n'
 
-    y = 110
+    y = 80 + SECTION_GAP
     for i, entry in enumerate(entries):
         d = 0.15 + i * 0.15
         body += f'<g {anim("f", d)}>\n'
-        body += f'<circle cx="52" cy="{y + 6}" r="5" fill="{ACCENT}"/>\n'
+        body += f'<circle cx="{PAD + 4}" cy="{y + 8}" r="5" fill="{ACCENT}"/>\n'
         if i < len(entries) - 1:
-            body += f'<line x1="52" y1="{y + 14}" x2="52" y2="{y + 92}" stroke="{LINE}" stroke-width="2"/>\n'
-        body += f'<text x="74" y="{y + 10}" font-family="{SERIF}" font-size="19" fill="{INK}">{esc(entry["title"])}</text>\n'
-        body += f'<text x="74" y="{y + 32}" font-family="{MONO}" font-size="12.5" letter-spacing="0.5" fill="{ACCENT}">{esc(entry["company"].upper())}</text>\n'
+            body += f'<line x1="{PAD + 4}" y1="{y + 16}" x2="{PAD + 4}" y2="{y + row_h}" stroke="{LINE}" stroke-width="2"/>\n'
+        tx = PAD + 28
+        body += f'<text x="{tx}" y="{y + 12}" font-family="{SERIF}" font-size="21" fill="{INK}">{esc(entry["title"])}</text>\n'
+        body += f'<text x="{tx}" y="{y + 36}" font-family="{MONO}" font-size="12.5" letter-spacing="0.5" fill="{ACCENT}">{esc(entry["company"].upper())}</text>\n'
         period = f'{entry["start"]} – {entry["end"]}'
-        body += f'<text x="74" y="{y + 52}" font-family="{SANS}" font-size="12.5" fill="{INK_MUTED}">{esc(period)} · {esc(entry["location"])}</text>\n'
+        body += f'<text x="{tx}" y="{y + 58}" font-family="{SANS}" font-size="12.5" fill="{INK_MUTED}">{esc(period)} · {esc(entry["location"])}</text>\n'
         if entry.get("summary"):
             for j, line in enumerate(wrap_text(entry["summary"], 104)[:2]):
-                body += f'<text x="74" y="{y + 72 + j * 17}" font-family="{SANS}" font-size="12" fill="{INK_SOFT}">{esc(line)}</text>\n'
+                body += f'<text x="{tx}" y="{y + 80 + j * 18}" font-family="{SANS}" font-size="12" fill="{INK_SOFT}">{esc(line)}</text>\n'
         body += "</g>\n"
-        y += 92
+        y += row_h
 
     return card_shell(w, h, body, title="Professional experience")
 
@@ -300,43 +308,46 @@ def render_education(profile: dict) -> str:
     certs = profile["certifications"]
     education = profile["education"]
     cols = 2
+    cert_row_h = 64
     rows = (len(certs) + cols - 1) // cols
-    h = 160 + (len(education) * 56) + rows * 56
+    h = 170 + (len(education) * 60) + rows * cert_row_h
 
-    body = f'<text {anim("r", 0.0)} x="42" y="56" font-family="{SERIF}" font-size="30" fill="{INK}">What I\'ve <tspan font-style="italic" fill="{ACCENT}">learned</tspan></text>\n'
-    body += f'<line x1="42" y1="74" x2="{w - 42}" y2="74" stroke="{LINE}" stroke-width="1"/>\n'
+    body = f'<text {anim("r", 0.0)} x="{PAD}" y="58" font-family="{SERIF}" font-size="32" fill="{INK}">What I\'ve <tspan font-style="italic" fill="{ACCENT}">learned</tspan></text>\n'
+    body += f'<line x1="{PAD}" y1="80" x2="{w - PAD}" y2="80" stroke="{LINE}" stroke-width="1"/>\n'
 
-    y = 102
+    y = 80 + SECTION_GAP
     for i, edu in enumerate(education):
         d = 0.15 + i * 0.1
         body += f'<g {anim("f", d)}>\n'
-        body += f'<text x="42" y="{y + 14}" font-family="{SERIF}" font-size="17" fill="{INK}">{esc(edu["institution"])}</text>\n'
-        body += f'<text x="42" y="{y + 34}" font-family="{SANS}" font-size="12" fill="{INK_MUTED}">{esc(edu["program"])} · {esc(edu.get("period", ""))}</text>\n'
+        body += f'<text x="{PAD}" y="{y + 16}" font-family="{SERIF}" font-size="18" fill="{INK}">{esc(edu["institution"])}</text>\n'
+        body += f'<text x="{PAD}" y="{y + 38}" font-family="{SANS}" font-size="12" fill="{INK_MUTED}">{esc(edu["program"])} · {esc(edu.get("period", ""))}</text>\n'
         body += "</g>\n"
-        y += 56
+        y += 60
 
     if education:
-        y += 8
+        y += 10
 
-    body += f'<text x="42" y="{y}" font-family="{MONO}" font-size="11.5" letter-spacing="1.5" fill="{INK_MUTED}">CERTIFICATIONS — CODERHOUSE</text>\n'
-    y += 22
+    body += f'<text x="{PAD}" y="{y}" font-family="{MONO}" font-size="11.5" letter-spacing="1.5" fill="{INK_MUTED}">CERTIFICATIONS — CODERHOUSE</text>\n'
+    y += 26
 
-    col_w = (w - 84 - 20) // cols
+    gutter = 24
+    col_w = (w - 2 * PAD - gutter) // cols
+    cert_card_h = 52
     for i, cert in enumerate(certs):
         col = i % cols
         row = i // cols
-        cx = 42 + col * (col_w + 20)
-        cy = y + row * 56
+        cx = PAD + col * (col_w + gutter)
+        cy = y + row * cert_row_h
         d = 0.1 + i * 0.07
         body += f'<g {anim("f", d)}>\n'
-        body += f'<rect x="{cx}" y="{cy}" width="{col_w}" height="44" rx="8" fill="{PANEL}"/>\n'
-        body += f'<circle cx="{cx + 20}" cy="{cy + 22}" r="4" fill="{ACCENT}"/>\n'
-        body += f'<text x="{cx + 36}" y="{cy + 19}" font-family="{SANS}" font-size="12.5" font-weight="600" fill="{INK}">{esc(cert["name"])}</text>\n'
+        body += f'<rect x="{cx}" y="{cy}" width="{col_w}" height="{cert_card_h}" rx="10" fill="{PANEL}"/>\n'
+        body += f'<circle cx="{cx + 22}" cy="{cy + 26}" r="4" fill="{ACCENT}"/>\n'
+        body += f'<text x="{cx + 40}" y="{cy + 23}" font-family="{SANS}" font-size="12.5" font-weight="600" fill="{INK}">{esc(cert["name"])}</text>\n'
         status = f'Issued {cert["issued"]}'
         expires = cert.get("expires")
         if expires:
             status += f' · Expired {expires}' if _cert_expired(expires) else f' · Valid to {expires}'
-        body += f'<text x="{cx + 36}" y="{cy + 35}" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">{esc(cert["issuer"])} · {esc(status)}</text>\n'
+        body += f'<text x="{cx + 40}" y="{cy + 40}" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">{esc(cert["issuer"])} · {esc(status)}</text>\n'
         body += "</g>\n"
 
     return card_shell(w, h, body, title="Education and certifications")
@@ -349,28 +360,29 @@ def render_education(profile: dict) -> str:
 def render_tech_stack(profile: dict) -> str:
     w = 940
     categories = list(profile["skills"].items())
-    h = 96 + sum(54 for _ in categories)
+    row_h = 60
+    h = 110 + sum(row_h for _ in categories)
 
-    body = f'<text {anim("r", 0.0)} x="42" y="56" font-family="{SERIF}" font-size="30" fill="{INK}">What I <tspan font-style="italic" fill="{ACCENT}">build with</tspan></text>\n'
-    body += f'<line x1="42" y1="74" x2="{w - 42}" y2="74" stroke="{LINE}" stroke-width="1"/>\n'
+    body = f'<text {anim("r", 0.0)} x="{PAD}" y="58" font-family="{SERIF}" font-size="32" fill="{INK}">What I <tspan font-style="italic" fill="{ACCENT}">build with</tspan></text>\n'
+    body += f'<line x1="{PAD}" y1="80" x2="{w - PAD}" y2="80" stroke="{LINE}" stroke-width="1"/>\n'
 
-    y = 100
+    y = 80 + SECTION_GAP
     for i, (category, skills) in enumerate(categories):
         d = 0.1 + i * 0.12
         body += f'<g {anim("f", d)}>\n'
-        body += f'<text x="42" y="{y}" font-family="{MONO}" font-size="11.5" letter-spacing="1.5" fill="{ACCENT}">{esc(category.upper())}</text>\n'
-        x = 42
-        chip_y = y + 14
+        body += f'<text x="{PAD}" y="{y}" font-family="{MONO}" font-size="11.5" letter-spacing="1.5" fill="{ACCENT}">{esc(category.upper())}</text>\n'
+        x = PAD
+        chip_y = y + 16
         for skill in skills:
-            chip_w = 16 + len(skill) * 7.2
-            if x + chip_w > w - 42:
-                x = 42
-                chip_y += 32
-            body += f'<rect x="{x}" y="{chip_y}" width="{chip_w:.0f}" height="26" rx="13" fill="{PANEL}"/>\n'
-            body += f'<text x="{x + chip_w / 2:.0f}" y="{chip_y + 17}" font-size="12" text-anchor="middle" font-family="{SANS}" fill="{INK}">{esc(skill)}</text>\n'
-            x += chip_w + 10
+            chip_w = 20 + len(skill) * 7.4
+            if x + chip_w > w - PAD:
+                x = PAD
+                chip_y += 34
+            body += f'<rect x="{x}" y="{chip_y}" width="{chip_w:.0f}" height="28" rx="14" fill="{PANEL}"/>\n'
+            body += f'<text x="{x + chip_w / 2:.0f}" y="{chip_y + 18}" font-size="12" text-anchor="middle" font-family="{SANS}" fill="{INK}">{esc(skill)}</text>\n'
+            x += chip_w + 12
         body += "</g>\n"
-        y += 54
+        y += row_h
 
     return card_shell(w, h, body, title="Technical skills")
 
@@ -388,11 +400,11 @@ def render_activity(profile: dict, stats: dict) -> str:
     # mirrors the reference's "contributions / streak / days / busiest day"
     # composition instead of cramming everything into one horizontal row.
     divider_x = 666
-    right_x = divider_x + 48
+    right_x = divider_x + PAD
 
-    body = f'<text {anim("f", 0.0)} x="42" y="46" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">THE LAST 12 MONTHS ON GITHUB</text>\n'
+    body = f'<text {anim("f", 0.0)} x="{PAD}" y="46" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">THE LAST 12 MONTHS ON GITHUB</text>\n'
     body += (
-        f'<text {anim("r", 0.1)} x="40" y="98" font-family="{SERIF}" font-size="46" fill="{INK}">'
+        f'<text {anim("r", 0.1)} x="{PAD - 2}" y="98" font-family="{SERIF}" font-size="46" fill="{INK}">'
         f'{total:,} <tspan font-style="italic" fill="{ACCENT}">contributions</tspan></text>\n'
     )
 
@@ -401,7 +413,7 @@ def render_activity(profile: dict, stats: dict) -> str:
     max_val = max([monthly[m] for m in months_sorted], default=1) or 1
     peak_month = max(months_sorted, key=lambda m: monthly[m]) if months_sorted else None
 
-    chart_x, chart_y, chart_w, chart_h = 42, 150, divider_x - 42 - 24, 110
+    chart_x, chart_y, chart_w, chart_h = PAD, 160, divider_x - PAD - 28, 108
     bar_gap = 10
     bar_w = (chart_w - bar_gap * (len(months_sorted) - 1)) / max(len(months_sorted), 1)
 
@@ -415,12 +427,12 @@ def render_activity(profile: dict, stats: dict) -> str:
         color = ACCENT if is_peak else INK
         d = 0.3 + i * 0.05
         body += f'<rect {anim("g", d)} x="{bx:.1f}" y="{by:.1f}" width="{bar_w:.1f}" height="{max(bar_h, 2):.1f}" rx="3" fill="{color}"><title>{label}: {val}</title></rect>\n'
-        body += f'<text {anim("f", d)} x="{bx + bar_w / 2:.1f}" y="{chart_y + chart_h + 22}" text-anchor="middle" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">{label}</text>\n'
+        body += f'<text {anim("f", d)} x="{bx + bar_w / 2:.1f}" y="{chart_y + chart_h + 24}" text-anchor="middle" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">{label}</text>\n'
         if is_peak:
             body += f'<text {anim("p", d + 0.5)} x="{bx + bar_w / 2:.1f}" y="{by - 8:.1f}" text-anchor="middle" font-family="{MONO}" font-size="10.5" fill="{ACCENT}">{val}</text>\n'
 
     # Right column: stacked metrics with thin separators, numbers dominant.
-    body += f'<line x1="{divider_x}" y1="40" x2="{divider_x}" y2="{h - 40}" stroke="{LINE}" stroke-width="1"/>\n'
+    body += f'<line x1="{divider_x}" y1="44" x2="{divider_x}" y2="{h - 44}" stroke="{LINE}" stroke-width="1"/>\n'
 
     metrics = [
         (f'{stats["current_streak"]}d / {stats["longest_streak"]}d', "CURRENT STREAK, AND THE LONGEST"),
@@ -431,20 +443,20 @@ def render_activity(profile: dict, stats: dict) -> str:
     else:
         metrics.append(("—", "NO BUSIEST DAY DATA YET"))
 
-    row_h = (h - 80) / len(metrics)
+    row_h = (h - 88) / len(metrics)
     for i, (value, label) in enumerate(metrics):
-        ry = 60 + i * row_h
+        ry = 64 + i * row_h
         d = 0.35 + i * 0.12
         body += f'<g {anim("f", d)}>\n'
-        body += f'<text x="{right_x}" y="{ry + 28}" font-family="{SERIF}" font-size="30" fill="{INK}">{esc(value)}</text>\n'
+        body += f'<text x="{right_x}" y="{ry + 30}" font-family="{SERIF}" font-size="30" fill="{INK}">{esc(value)}</text>\n'
         body += (
-            f'<text x="{right_x}" y="{ry + 50}" font-family="{SANS}" font-size="11.5" fill="{INK_MUTED}">'
+            f'<text x="{right_x}" y="{ry + 52}" font-family="{SANS}" font-size="11.5" fill="{INK_MUTED}">'
             f'{esc(label.capitalize())}</text>\n'
         )
         body += "</g>\n"
         if i < len(metrics) - 1:
-            sep_y = 60 + (i + 1) * row_h - 18
-            body += f'<line x1="{right_x}" y1="{sep_y}" x2="{w - 42}" y2="{sep_y}" stroke="{LINE}" stroke-width="1"/>\n'
+            sep_y = 64 + (i + 1) * row_h - 20
+            body += f'<line x1="{right_x}" y1="{sep_y}" x2="{w - PAD}" y2="{sep_y}" stroke="{LINE}" stroke-width="1"/>\n'
 
     return card_shell(w, h, body, title=f"{total} contributions in the last 12 months")
 
@@ -454,7 +466,7 @@ def render_activity(profile: dict, stats: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_heatmap(profile: dict, stats: dict) -> str:
-    w, h = 940, 220
+    w, h = 940, 230
 
     days = {d["date"]: d["count"] for d in stats["days"]}
     if days:
@@ -481,11 +493,11 @@ def render_heatmap(profile: dict, stats: dict) -> str:
 
     cell = 11
     gap = 3
-    top = 78
-    left = 46
+    top = 86
+    left = PAD
 
-    body = f'<text {anim("r", 0.0)} x="42" y="42" font-family="{SERIF}" font-size="26" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
-    body += f'<text {anim("f", 0.2)} x="{w - 42}" y="38" text-anchor="end" font-family="{MONO}" font-size="10.5" letter-spacing="1.5" fill="{INK_MUTED}">REFRESHED DAILY</text>\n'
+    body = f'<text {anim("r", 0.0)} x="{PAD}" y="44" font-family="{SERIF}" font-size="28" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
+    body += f'<text {anim("f", 0.2)} x="{w - PAD}" y="40" text-anchor="end" font-family="{MONO}" font-size="10.5" letter-spacing="1.5" fill="{INK_MUTED}">REFRESHED DAILY</text>\n'
 
     cur = start
     week = 0
@@ -495,7 +507,7 @@ def render_heatmap(profile: dict, stats: dict) -> str:
             month_label = MONTH_NAMES[cur.month - 1]
             if month_label != last_month:
                 x = left + week * (cell + gap)
-                body += f'<text {anim("f", 0.5)} x="{x}" y="{top - 10}" font-family="{MONO}" font-size="10" fill="{INK_MUTED}">{month_label}</text>\n'
+                body += f'<text {anim("f", 0.5)} x="{x}" y="{top - 12}" font-family="{MONO}" font-size="10" fill="{INK_MUTED}">{month_label}</text>\n'
                 last_month = month_label
         day_index = (cur.weekday() + 1) % 7
         x = left + week * (cell + gap)
@@ -509,7 +521,7 @@ def render_heatmap(profile: dict, stats: dict) -> str:
         cur += dt.timedelta(days=1)
 
     legend_x = w - 220
-    legend_y = h - 24
+    legend_y = h - 30
     legend_colors = [PANEL, ACCENT_SOFT, ACCENT_MID, ACCENT]
     body += f'<text x="{legend_x - 30}" y="{legend_y + 9}" font-family="{MONO}" font-size="10.5" fill="{INK_MUTED}">Less</text>\n'
     for i, color in enumerate(legend_colors):
@@ -525,10 +537,10 @@ def render_heatmap(profile: dict, stats: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_title_coding() -> str:
-    w, h = 940, 92
-    body = f'<text {anim("r", 0.0)} x="42" y="54" font-family="{SERIF}" font-size="32" fill="{INK}">Featured <tspan font-style="italic" fill="{ACCENT}">Work</tspan></text>\n'
-    body += f'<text {anim("f", 0.25)} x="{w - 42}" y="54" text-anchor="end" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">WHAT I\'M BUILDING</text>\n'
-    body += f'<line x1="42" y1="70" x2="{w - 42}" y2="70" stroke="{LINE}" stroke-width="1"/>\n'
+    w, h = 940, 100
+    body = f'<text {anim("r", 0.0)} x="{PAD}" y="58" font-family="{SERIF}" font-size="34" fill="{INK}">Featured <tspan font-style="italic" fill="{ACCENT}">Work</tspan></text>\n'
+    body += f'<text {anim("f", 0.25)} x="{w - PAD}" y="58" text-anchor="end" font-family="{MONO}" font-size="12" letter-spacing="1.5" fill="{INK_MUTED}">WHAT I\'M BUILDING</text>\n'
+    body += f'<line x1="{PAD}" y1="76" x2="{w - PAD}" y2="76" stroke="{LINE}" stroke-width="1"/>\n'
     return card_shell(w, h, body, title="Featured work — what I'm building")
 
 
@@ -537,21 +549,22 @@ def render_title_coding() -> str:
 # ---------------------------------------------------------------------------
 
 def render_repo_card(filename: str, repo: dict) -> None:
-    w, h = 300, 190
+    w, h = 300, 210
 
-    desc_lines = wrap_text(repo.get("description") or "No description provided.", 34)[:3]
+    desc_lines = wrap_text(repo.get("description") or "No description provided.", 32)[:3]
 
-    body = f'<text {anim("r", 0.0)} x="24" y="42" font-family="{SERIF}" font-size="19" fill="{INK}">{esc(repo["name"])}</text>\n'
-    y = 66
+    pad = 28
+    body = f'<text {anim("r", 0.0)} x="{pad}" y="46" font-family="{SERIF}" font-size="20" fill="{INK}">{esc(repo["name"])}</text>\n'
+    y = 72
     for line in desc_lines:
-        body += f'<text {anim("f", 0.2)} x="24" y="{y}" font-family="{SANS}" font-size="12" fill="{INK_SOFT}">{esc(line)}</text>\n'
-        y += 18
+        body += f'<text {anim("f", 0.2)} x="{pad}" y="{y}" font-family="{SANS}" font-size="12" fill="{INK_SOFT}">{esc(line)}</text>\n'
+        y += 19
 
-    footer_y = h - 28
-    body += f'<line x1="24" y1="{footer_y - 18}" x2="{w - 24}" y2="{footer_y - 18}" stroke="{LINE}" stroke-width="1"/>\n'
-    body += f'<text {anim("f", 0.35)} x="24" y="{footer_y + 4}" font-family="{MONO}" font-size="11" fill="{ACCENT}">{esc(repo.get("language") or "—")}</text>\n'
-    body += f'<text {anim("f", 0.35)} x="150" y="{footer_y + 4}" font-family="{MONO}" font-size="11" fill="{INK_MUTED}">★ {repo.get("stars", 0)}</text>\n'
-    body += f'<text {anim("f", 0.35)} x="210" y="{footer_y + 4}" font-family="{MONO}" font-size="11" fill="{INK_MUTED}">⑂ {repo.get("forks", 0)}</text>\n'
+    footer_y = h - 32
+    body += f'<line x1="{pad}" y1="{footer_y - 20}" x2="{w - pad}" y2="{footer_y - 20}" stroke="{LINE}" stroke-width="1"/>\n'
+    body += f'<text {anim("f", 0.35)} x="{pad}" y="{footer_y + 4}" font-family="{MONO}" font-size="11" fill="{ACCENT}">{esc(repo.get("language") or "—")}</text>\n'
+    body += f'<text {anim("f", 0.35)} x="{pad + 128}" y="{footer_y + 4}" font-family="{MONO}" font-size="11" fill="{INK_MUTED}">★ {repo.get("stars", 0)}</text>\n'
+    body += f'<text {anim("f", 0.35)} x="{pad + 190}" y="{footer_y + 4}" font-family="{MONO}" font-size="11" fill="{INK_MUTED}">⑂ {repo.get("forks", 0)}</text>\n'
 
     write_svg(filename, card_shell(w, h, body, title=repo["name"]))
 

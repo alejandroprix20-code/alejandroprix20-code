@@ -419,7 +419,7 @@ def render_activity(profile: dict, stats: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_heatmap(profile: dict, stats: dict) -> str:
-    w, h = 940, 190
+    w, h = 940, 210
 
     days = {d["date"]: d["count"] for d in stats["days"]}
     if days:
@@ -446,10 +446,10 @@ def render_heatmap(profile: dict, stats: dict) -> str:
 
     cell = 11
     gap = 3
-    top = 58
+    top = 86
     left = 46
 
-    body = f'<text {anim("r", 0.0)} x="42" y="42" font-family="{SERIF}" font-size="26" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
+    body = f'<text {anim("r", 0.0)} x="42" y="46" font-family="{SERIF}" font-size="28" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
 
     cur = start
     week = 0
@@ -459,7 +459,7 @@ def render_heatmap(profile: dict, stats: dict) -> str:
             month_label = MONTH_NAMES[cur.month - 1]
             if month_label != last_month:
                 x = left + week * (cell + gap)
-                body += f'<text {anim("f", 0.5)} x="{x}" y="{top - 10}" font-family="{MONO}" font-size="10" fill="{INK_MUTED}">{month_label}</text>\n'
+                body += f'<text {anim("f", 0.5)} x="{x}" y="{top - 16}" font-family="{MONO}" font-size="10" fill="{INK_MUTED}">{month_label}</text>\n'
                 last_month = month_label
         day_index = (cur.weekday() + 1) % 7
         x = left + week * (cell + gap)
@@ -554,8 +554,13 @@ def main() -> None:
     write_svg("tech-stack.svg", render_tech_stack(profile))
     write_svg("title-coding.svg", render_title_coding())
 
+    overrides = profile.get("repo_description_overrides", {})
     for repo_name in profile.get("featured_repos", []):
-        repo = repos_by_name.get(repo_name, {"name": repo_name, "description": "", "language": "", "stars": 0, "forks": 0})
+        repo = dict(repos_by_name.get(repo_name, {"name": repo_name, "description": "", "language": "", "stars": 0, "forks": 0}))
+        if repo_name in overrides:
+            # GitHub's live API description is in Spanish for this repo; this repo's
+            # actual content/purpose is unchanged, just translated for the English-only README.
+            repo["description"] = overrides[repo_name]
         safe_name = repo_name.lower().replace("_", "-")
         render_repo_card(f"repo-{safe_name}.svg", repo)
 

@@ -37,5 +37,8 @@
     "fantastic-react",
     "fictional-fishstick",
     "First_Game"
-  ]
+  ],
+  "repo_description_overrides": {
+    "First_Game": "My personal project."
+  }
 }

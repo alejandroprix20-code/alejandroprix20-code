@@ -419,7 +419,7 @@ def render_activity(profile: dict, stats: dict) -> str:
 # ---------------------------------------------------------------------------
 
 def render_heatmap(profile: dict, stats: dict) -> str:
-    w, h = 940, 210
+    w, h = 940, 216
 
     days = {d["date"]: d["count"] for d in stats["days"]}
     if days:
@@ -446,10 +446,10 @@ def render_heatmap(profile: dict, stats: dict) -> str:
 
     cell = 11
     gap = 3
-    top = 86
+    top = 92
     left = 46
 
-    body = f'<text {anim("r", 0.0)} x="42" y="46" font-family="{SERIF}" font-size="28" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
+    body = f'<text {anim("r", 0.0)} x="42" y="48" font-family="{SERIF}" font-size="30" fill="{INK}">Every day, <tspan font-style="italic" fill="{ACCENT}">in violet</tspan></text>\n'
 
     cur = start
     week = 0
@@ -459,7 +459,7 @@ def render_heatmap(profile: dict, stats: dict) -> str:
             month_label = MONTH_NAMES[cur.month - 1]
             if month_label != last_month:
                 x = left + week * (cell + gap)
-                body += f'<text {anim("f", 0.5)} x="{x}" y="{top - 16}" font-family="{MONO}" font-size="10" fill="{INK_MUTED}">{month_label}</text>\n'
+                body += f'<text {anim("f", 0.5)} x="{x}" y="{top - 20}" font-family="{MONO}" font-size="10.5" letter-spacing="0.5" fill="{INK_MUTED}">{month_label.upper()}</text>\n'
                 last_month = month_label
         day_index = (cur.weekday() + 1) % 7
         x = left + week * (cell + gap)
